@@ -1,0 +1,285 @@
+<html>
+	<head>
+		<title>WESHOW - 讯盟前端小分队</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="share_title" content="">
+		<meta name="share_content" content="">
+		<meta name="share_image" content="http://video.statics.cdn.jituancaiyun.com/activity/images/jtcy/dept.png">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<link rel="stylesheet" href="./css/style-a077721ef9.css">
+		<script>
+			// 缩放页面
+			var dpr = window.document.documentElement.getBoundingClientRect().width/320
+//			console.log(window.document.documentElement.getBoundingClientRect().width)
+			var viewport = document.getElementsByName('viewport')[0]
+			viewport.content = 'width=320, initial-scale='+dpr+', maximum-scale='+dpr+', user-scalable=no'
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas" width="45px" height="45px">你的浏览器不支持canvas</canvas>
+		<div id="loading-text"></div>
+		<div id="app"></div>
+		
+		<script>
+			(function () {
+				window.renderControl = {
+					w: document.body.clientWidth,
+					h: document.body.clientHeight,
+					computedSize: function (item, type, longPageData) {
+						switch(type) {
+							case 'width': {
+								return this.w/320 * item.width;
+							}
+							case 'height': {
+								return this.w/320 * item.height;
+							}
+							case 'left': {
+								return this.w/320 * item.left;
+							}
+							case 'top': {
+								var h = longPageData&&longPageData.longPage ? longPageData.pageHeight : 480
+								if (item.top > h/2) return 'auto'
+								else return this.h/480 * item.top;
+							}
+							case 'bottom': {
+								var h = longPageData&&longPageData.longPage ? longPageData.pageHeight : 480
+								if (item.top <= h/2) return 'auto'
+								else return this.h/480 * (h - item.top - item.height);
+							}
+						}
+					},
+					opacity: function (animateName) {
+//						var noOpacityAnimate = ['bounce', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'flip', 'hinge'];
+//						if (animateName && !this.inArray(animateName, noOpacityAnimate)) {
+//							return 0
+//						} else return 1
+						return 0
+					},
+					inArray: function (v, arr) {
+						for (var i=0; i< arr.length; i++) {
+							if (v == arr[i]) return true
+						}
+						return false;
+					},
+					css: function (styles, obj) {
+						for (var property in styles) {
+							obj.style[property] = styles[property]
+						}
+					},
+					attr: function (obj, param, val) {
+						if (typeof param == 'string') {
+							obj.setAttribute(param, val)
+						} else {
+							for (var i in param) {
+								obj.setAttribute(i, param[i])
+							}
+						}
+					},
+					search: function () {
+						var search = location.search;
+						var searchObj = {};
+						var key = "";
+						if (search) {
+							var paramArr = search.split("&");
+							for (var i=0; i<paramArr.length; i++) {
+								key = paramArr[i].split("=")[0];
+								key = key.replace(/\?/g, '');
+								searchObj[key] = paramArr[i].split("=")[1];
+							}
+							return searchObj;
+						} else return "";
+					},
+					changeSearch: function (name, value) {
+						var search = this.search()
+						if (search[name] != value) {
+							search[name] = value
+							var str = ''
+							for (var i in search) {
+								str += i + '=' + search[i] + '&'
+							}
+							return str.substr(0, str.length-1)
+						} return ''
+					},
+					addEvents: function (target, type, func) {
+						if (target.addEventListener) {
+							target.addEventListener(type, func, false);
+						} else if (target.attachEvent) //ie6到ie8
+							target.attachEvent("on" + type, func);
+						else
+							target["on" + type] = func; //ie5
+					},
+					removeEvents: function(target, type, func){
+						if (target.removeEventListener)
+							target.removeEventListener(type, func, false);
+						else
+						if (target.detachEvent)
+							target.detachEvent("on" + type, func);
+						else
+							target["on" + type] = null;
+					},
+					page: function (data, longPageData) {
+						var str = 'position:relative;'
+						if (data.length > 0) {
+							str += 'background-image:url("'+ data[0].src +'");background-size:100% 100%;'
+						}
+						if (longPageData) {
+							str += 'height:' + (longPageData.pageHeight/480)*this.h + 'px;'
+							str += longPageData.pageId != this.search().page ? 'display:none;' : ''
+						}
+						return str
+					},
+					renderText: function(data, longPageData) {
+						var str = '', div;
+						for (var i=0; i< data.length; i++) {
+							div = document.createElement('div');
+							this.css({
+//								'top': this.computedSize(data[i], 'top', longPageData),
+//								'left': this.computedSize(data[i], 'left', longPageData),
+								'top': data[i].top + 'px',
+								'left': data[i].left + 'px',
+								'z-index': data[i].zIndex,
+//								'font-size': data[i].fontsize ? data[i].fontsize[0]*(this.w/320) : '14px',
+								'font-size': data[i].fontsize ? (data[i].fontsize[0]+'px') : '14px',
+								'color': data[i].color,
+								'animation-delay': data[i].animateDelay + 's',
+								'position': 'absolute',
+								'transform': 'rotateZ(0deg)',
+								'opacity': this.opacity(data[i].animateName),
+								'animation-fill-mode': 'forwards'
+							}, div)
+							this.attr(div, {
+								'id': data[i].id,
+								'class': 'animated item',
+								'data-animate': data[i].animateName,
+								'data-type': 'text'
+							})
+							div.innerText = data[i].content
+							str += div.outerHTML
+						}
+						return str
+					},
+					renderBtn: function(data, longPageData) {
+						var str = '', div;
+						for (var i=0; i< data.length; i++) {
+							div = document.createElement('div');
+							this.css({
+//								'top': this.computedSize(data[i], 'top', longPageData),
+//								'bottom': this.computedSize(data[i], 'bottom', longPageData),
+//								'left': this.computedSize(data[i], 'left', longPageData),
+//								'width': this.computedSize(data[i], 'width', longPageData),
+//								'height': this.computedSize(data[i], 'height', longPageData),
+//								'line-height': this.computedSize(data[i], 'height', longPageData) + 'px',
+								'top': data[i].top + 'px',
+								'left': data[i].left + 'px',
+								'width': data[i].width + 'px',
+								'height': data[i].height + 'px',
+								'line-height': data[i].height + 'px',
+								'z-index': data[i].zIndex,
+								'font-size': data[i].fontsize ? (data[i].fontsize[0]+'px') : '14px',
+								'color': data[i].fontColor,
+								'background-color': data[i].bgColor,
+								'animation-delay': data[i].animateDelay + 's',
+								'position': 'absolute',
+								'text-align': data[i].align || 'center',
+								'opacity': this.opacity(data[i].animateName),
+								'animation-fill-mode': 'forwards',
+								'transform': 'rotateZ(0deg)',
+								'border-radius': data[i].radius + 'px'
+							}, div)
+							this.attr(div, {
+								'id': data[i].id,
+								'class': 'animated item',
+								'data-animate': data[i].animateName,
+								'data-type': 'btn'
+							})
+							div.innerText = data[i].content
+							str += div.outerHTML
+						}
+						return str
+					},
+					renderPicture: function(data, longPageData) {
+						var str = '', div;
+						for (var i=0; i< data.length; i++) {
+							div = document.createElement('img');
+							this.css({
+//								'top': this.computedSize(data[i], 'top', longPageData),
+//								'bottom': this.computedSize(data[i], 'bottom', longPageData),
+//								'left': this.computedSize(data[i], 'left', longPageData),
+//								'width': this.computedSize(data[i], 'width', longPageData),
+//								'height': this.computedSize(data[i], 'height', longPageData),
+								'top': data[i].top + 'px',
+								'left': data[i].left + 'px',
+								'width': data[i].width + 'px',
+								'height': data[i].height + 'px',
+								'z-index': data[i].zIndex,
+								'transform': 'rotateZ(0deg)',
+								'animation-delay': data[i].animateDelay + 's',
+								'opacity': this.opacity(data[i].animateName),
+								'animation-fill-mode': 'forwards',
+								'position': 'absolute'
+							}, div)
+							this.attr(div, {
+								'id': data[i].id,
+								'class': 'animated item',
+								'data-animate': data[i].animateName,
+								'data-type': 'picture'
+							})
+							div.src = data[i].src
+							str += div.outerHTML
+						}
+						return str
+					},
+				}
+			}())
+		</script>
+		
+		<script id="spa" type="text/html">
+			<div class="wp">
+				<div class="wp-inner">
+					{{# for(var i = 0, len = d.length; i < len; i++){ }}
+					<div class="page page{{i}}" style='{{ renderControl.page(d[i].children.bg) }}'>
+						<div class="spa-container">
+						{{ renderControl.renderText(d[i].children.text) }}
+						{{ renderControl.renderBtn(d[i].children.btn) }}
+						{{ renderControl.renderPicture(d[i].children.picture) }}
+						</div>
+					</div>
+					{{# } }}
+					<div class="page page-copy" style="position: relative;">
+						<div class="spa-container">
+							<div class="copyright">
+								<img src="./images/code-06258070e0.png" class="qrcode">
+								<p>集团彩云</p>
+								<p>WESHOW - 优小助|H5海报自定义工具</p>
+								<p>讯盟科技 前端小分队</p>
+								<p>@MZI 制作</p>
+								<p>感谢磊哥提供接口</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="arrow">
+				<img src="./images/arrow-297c3ffb84.png" width="100%" height="100%"/>
+			</div>
+			<div class="progress">
+				<span id="progress"></span>
+				<em class="page-tip"></em>
+			</div>
+		</script>
+		<script id="lp" type="text/html">
+			<div class="long-page">
+				{{# for(var i = 0, len = d.length; i < len; i++){ }}
+				<div class="page page{{i}}" style='{{ renderControl.page(d[i].children.bg, d[i]) }}'>
+					{{ renderControl.renderText(d[i].children.text, d[i]) }}
+					{{ renderControl.renderBtn(d[i].children.btn, d[i]) }}
+					{{ renderControl.renderPicture(d[i].children.picture, d[i]) }}
+				</div>
+				{{# } }}
+			</div>
+		</script>
+		<script src="./js/index-e639c823ee.js"></script>
+	</body>
+</html>

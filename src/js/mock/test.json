@@ -1,0 +1,27 @@
+{
+    "appTitle": "应用二号测试",
+    "appDesc": "应用",
+    "appLogo": "",
+    "appCover": "",
+    "id": 2,
+    "appContent": [
+        {
+            "title":"讯盟测试一号",
+            "desc":"讯盟测试一号",
+            "pageId":1,
+            "id":1481269767089,
+            "scrollTop":0,
+            "itemType":"page",
+            "children":{"text":[{"id":1481269767093,"itemType":"text","content":"快来快来","fontsize":["24"],"color":"#ff0000","animateName":["pulse"],"animateDelay":"","eventName":["alert"],"eventContent":"点击跳到官网","eventLink":"http://www.shinemo.com","left":107,"top":47,"zIndex":0,"fromPageId":1}],"picture":[],"btn":[{"width":"122","height":"30","content":"点我跳转","fontColor":"#ffffff","bgColor":"#ff8000","radius":"5","animateName":["bounce"],"animateDelay":"","eventLink":"http://www.shinemo.com","eventName":["alert"],"eventContent":"点击跳到官网","left":95,"top":306,"zIndex":1,"id":1481269767099,"fromPageId":1,"itemType":"btn"}],"bg":[]}
+        },
+        {
+            "title":"讯盟测试2号",
+            "desc":"讯盟测试2号",
+            "pageId":2,
+            "id":1481269775040,
+            "scrollTop":0,
+            "itemType":"page",
+            "children":{"text":[],"picture":[{"id":1481269783632,"itemType":"picture","src":"http://localhost:8088/dist/images/2-aad944.png","width":"121","height":"121","animateName":"","animateDelay":"","eventName":"","eventLink":"","eventContent":"","left":110,"top":191,"zIndex":2,"fromPageId":2}],"btn":[],"bg":[{"id":1481269778473,"itemType":"bgImg","src":"http://localhost:8088/dist/images/3-f641a6.png","fromPageId":2}]}
+        }
+    ]
+}
