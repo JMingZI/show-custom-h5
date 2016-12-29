@@ -2612,8 +2612,8 @@ input:-moz-placeholder {
   position: absolute;
   left: 50%;
   top: 100px;
-  width: 220px;
-  margin-left: -110px;
+  width: 300px;
+  margin-left: -150px;
   text-align: center; }
   .copyright .qrcode {
     border: 1px #cecece solid;

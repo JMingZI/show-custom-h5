@@ -1,4 +1,4 @@
-import loading from "./canvas/loading.js"
+import loading from "./canvas/loading-svg.js"
 import reqwest from 'reqwest'
 import laytpl from './laytpl/laytpl.js'
 import './fullpage/fullpage.js'
@@ -7,7 +7,6 @@ var Index = {
 	app: document.getElementById('app'),
 	cache: {},
 	init () {
-		loading.show()
 		var search = renderControl.search()
 		if (search && search.app && search.name) this.get()
 		else { location.href = 'http://video.statics.jituancaiyun.com/error/404.html' }

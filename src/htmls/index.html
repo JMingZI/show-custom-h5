@@ -12,14 +12,11 @@
 		<script>
 			// 缩放页面
 			var dpr = window.document.documentElement.getBoundingClientRect().width/320
-//			console.log(window.document.documentElement.getBoundingClientRect().width)
 			var viewport = document.getElementsByName('viewport')[0]
 			viewport.content = 'width=320, initial-scale='+dpr+', maximum-scale='+dpr+', user-scalable=no'
 		</script>
 	</head>
 	<body>
-		<canvas id="canvas" width="45px" height="45px">你的浏览器不支持canvas</canvas>
-		<div id="loading-text"></div>
 		<div id="app"></div>
 		
 		<script>
