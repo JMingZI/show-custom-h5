@@ -121,8 +121,12 @@ var Index = {
 		});
 	},
 	renderSpa (data) {
-		var me = this;
+		// 禁用浏览器默认滑动
+		document.addEventListener('touchmove', function(e) {
+			e.preventDefault();
+		});
 		
+		var me = this;
 		laytpl(document.getElementById('spa').innerHTML).render(data, function(html){
 			me.app.innerHTML = html;
 			var spaContainer = document.getElementsByClassName('spa-container')

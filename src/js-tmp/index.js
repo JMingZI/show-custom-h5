@@ -188,8 +188,12 @@
 			});
 		},
 		renderSpa: function renderSpa(data) {
-			var me = this;
+			// 禁用浏览器默认滑动
+			document.addEventListener('touchmove', function (e) {
+				e.preventDefault();
+			});
 	
+			var me = this;
 			(0, _laytpl2.default)(document.getElementById('spa').innerHTML).render(data, function (html) {
 				me.app.innerHTML = html;
 				var spaContainer = document.getElementsByClassName('spa-container');
@@ -1011,9 +1015,10 @@
 	 * Licensed under MIT (https://github.com/yanhaijing/zepto.fullpage/blob/master/LICENSE)
 	 */
 	(function (window) {
-		document.addEventListener('touchmove', function (e) {
-			e.preventDefault();
-		});
+		// 此处 touchmove 放到 单页面渲染后 监听
+		// document.addEventListener('touchmove', function(e) {
+		// 	e.preventDefault();
+		// });
 		var d = {
 			page: '.page',
 			start: 0,

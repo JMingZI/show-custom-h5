@@ -18,7 +18,6 @@
 	</head>
 	<body>
 		<div id="app"></div>
-		
 		<script>
 			(function () {
 				window.renderControl = {
@@ -122,12 +121,14 @@
 							str += 'background-image:url("'+ data[0].src +'");background-size:100% 100%;'
 						}
 						if (longPageData) {
-							str += 'height:' + (longPageData.pageHeight/480)*this.h + 'px;'
+//							console.log(longPageData)
+//							str += 'height:' + (longPageData.pageHeight/480)*this.h + 'px;'
+							str += 'height:' + (this.w/longPageData.referWidth)*longPageData.pageHeight + 'px;'
 							str += longPageData.pageId != this.search().page ? 'display:none;' : ''
 						}
 						return str
 					},
-					renderText: function(data, longPageData) {
+					renderText: function(data) {
 						var str = '', div;
 						for (var i=0; i< data.length; i++) {
 							div = document.createElement('div');
@@ -162,12 +163,6 @@
 						for (var i=0; i< data.length; i++) {
 							div = document.createElement('div');
 							this.css({
-//								'top': this.computedSize(data[i], 'top', longPageData),
-//								'bottom': this.computedSize(data[i], 'bottom', longPageData),
-//								'left': this.computedSize(data[i], 'left', longPageData),
-//								'width': this.computedSize(data[i], 'width', longPageData),
-//								'height': this.computedSize(data[i], 'height', longPageData),
-//								'line-height': this.computedSize(data[i], 'height', longPageData) + 'px',
 								'top': data[i].top + 'px',
 								'left': data[i].left + 'px',
 								'width': data[i].width + 'px',
@@ -187,7 +182,7 @@
 							}, div)
 							this.attr(div, {
 								'id': data[i].id,
-								'class': 'animated item',
+								'class': 'animated item' + (longPageData ? ' '+data[i].animateName : ''), // 长页面 动画直接 添加
 								'data-animate': data[i].animateName,
 								'data-type': 'btn'
 							})
@@ -196,7 +191,7 @@
 						}
 						return str
 					},
-					renderPicture: function(data, longPageData) {
+					renderPicture: function(data) {
 						var str = '', div;
 						for (var i=0; i< data.length; i++) {
 							div = document.createElement('img');
@@ -277,6 +272,6 @@
 				{{# } }}
 			</div>
 		</script>
-		<script src="./js/index-ccae8ab360.js"></script>
+		<script src="./js/index-72ac37263d.js"></script>
 	</body>
 </html>

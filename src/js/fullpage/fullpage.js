@@ -5,9 +5,10 @@
  * Licensed under MIT (https://github.com/yanhaijing/zepto.fullpage/blob/master/LICENSE)
  */
 (function(window) {
-	document.addEventListener('touchmove', function(e) {
-		e.preventDefault();
-	});
+	// 此处 touchmove 放到 单页面渲染后 监听
+	// document.addEventListener('touchmove', function(e) {
+	// 	e.preventDefault();
+	// });
 	var d = {
 		page: '.page',
 		start: 0,
